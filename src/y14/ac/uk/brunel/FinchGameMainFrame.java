@@ -22,7 +22,7 @@ import javax.swing.GroupLayout.Alignment;
 
 public class FinchGameMainFrame {
 	
-    JFrame mainFrame; 
+    JFrame mainFrame;
     
     /*private String finchFacts[] = {"Did you know that Finch can be programmed using many different programming languages? For example C, C++, Python, etc",
                                    "Did you know that Finch robot has many different methods you can use to program it?",

@@ -1,5 +1,5 @@
 package y14.ac.uk.brunel;
-/*
+/**
  * This class serves as the core engine of application
  * DO NOT include GUI elements here
  * ONLY for generating the final result

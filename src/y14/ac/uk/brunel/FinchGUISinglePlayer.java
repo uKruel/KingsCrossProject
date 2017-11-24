@@ -1,5 +1,5 @@
 package y14.ac.uk.brunel;
-/*
+/**
  * This class is for Singleplayer ONLY
  * DO NOT include the game algorithm here
  * ONLY for the management of GUI
@@ -12,9 +12,7 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 
-import java.awt.Dialog;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.util.ArrayList;
@@ -44,7 +42,6 @@ public class FinchGUISinglePlayer {
 					
 					FinchGUISinglePlayer window = new FinchGUISinglePlayer();
 					window.spFrame.setVisible(true);
-					window.spFrame.setResizable(false);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -57,14 +54,28 @@ public class FinchGUISinglePlayer {
     }
     
     private void initialize() {
+    	/**
+    	 * Letting the app know this is a 1-player game
+    	 * Set the amount of players, pass it to the PlayerSelection manager,
+    	 * passing back the ArrayList<Players> to this class for using the names 
+    	 */
     	ps = new PlayerSelection(1);
+    	ps.frmSimongameplayerselection.setResizable(false);
     	ps.frmSimongameplayerselection.setVisible(true);
     	this.players = ps.setPlayers();
     	
+    	/**
+    	 * Starting the Singleplayer GUI 
+    	 */
     	spFrame = new JFrame();
     	spFrame.setTitle("SimonGame [Singleplayer]");
     	spFrame.setBounds(100, 100, 637, 523);
     	spFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	
+    	/**
+    	 * GameManager is being called for SinglePlayer
+    	 * Let the match begin!
+    	 */
         GameManager gm = new GameManager(players);
     	gm.startGame();
     	

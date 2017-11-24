@@ -18,6 +18,8 @@ import javax.swing.ImageIcon;
 
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.util.ArrayList;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -32,7 +34,8 @@ public class FinchGUIMultiPlayer {
     protected Icon BeakUpFinchIcon = new ImageIcon(getClass().getResource("FinchBeakUpImage.jpg"));
     protected Icon FinchesImages[] = {RedFinchIcon, GreenFinchIcon, BlueFinchIcon, YellowFinchIcon};
     
-    
+    protected PlayerSelection ps;
+    protected ArrayList<Player> players = new ArrayList<Player>();
     
     JFrame mpFrame;
     
@@ -55,20 +58,40 @@ public class FinchGUIMultiPlayer {
     }
 
 	private void initialize() {
+		/**
+    	 * Letting the app know this is a more-than-1-player game
+    	 * Set the amount of players, pass it to the PlayerSelection manager,
+    	 * passing back the ArrayList<Players> to this class for using the names 
+    	 */
+    	ps = new PlayerSelection(2);
+    	ps.frmSimongameplayerselection.setResizable(false);
+    	ps.frmSimongameplayerselection.setVisible(true);
+    	this.players = ps.setPlayers();
+    	
+    	/**
+    	 * Starting the Multiplayer GUI 
+    	 */
 		mpFrame = new JFrame();
 		mpFrame.setTitle("SimonGame [Multiplayer]");
 		mpFrame.setBounds(100, 100, 643, 588);
 		mpFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    	/**
+    	 * GameManager is being called for SinglePlayer
+    	 * Let the match begin!
+    	 */
+        GameManager gm = new GameManager(players);
+    	gm.startGame();
     	
 		JLabel simonLabel = new JLabel("The SimonFinches"); /**/ simonLabel.setFont(new Font("Calibri", Font.BOLD, 30));
-        JLabel playerOneNameLabel = new JLabel(" " + playerOne.getName() + "'s score: ");
-        JLabel playerOneScoreLabel = new JLabel(Integer.toString(playerOne.getScore()));
-        JLabel playerOneLivesLabelText = new JLabel(" " + playerOne.getName() + "'s lives: ");
-        JLabel playerOneLivesLabel = new JLabel((Integer.toString(playerOne.getLives())));
-        JLabel playerTwoNameLabel = new JLabel(" " + playerTwo.getName() + "'s score: ");
-        JLabel playerTwoScoreLabel = new JLabel(Integer.toString(playerTwo.getScore()));
-        JLabel playerTwoLivesLabelText = new JLabel(" " + playerTwo.getName() + "'s lives: ");
-        JLabel playerTwoLivesLabel = new JLabel((Integer.toString(playerTwo.getLives())));
+        JLabel playerOneNameLabel = new JLabel(" " + players.get(0).getName() + "'s score: ");
+        JLabel playerOneScoreLabel = new JLabel(Integer.toString(players.get(0).getScore()));
+        JLabel playerOneLivesLabelText = new JLabel(" " + players.get(0).getName() + "'s lives: ");
+        JLabel playerOneLivesLabel = new JLabel((Integer.toString(players.get(0).getLives())));
+        JLabel playerTwoNameLabel = new JLabel(" " + players.get(1).getName() + "'s score: ");
+        JLabel playerTwoScoreLabel = new JLabel(Integer.toString(players.get(1).getScore()));
+        JLabel playerTwoLivesLabelText = new JLabel(" " + players.get(1).getName() + "'s lives: ");
+        JLabel playerTwoLivesLabel = new JLabel((Integer.toString(players.get(1).getLives())));
         JLabel finchesImagesLabel = new JLabel(AllFinchesIcon);
         JTextArea resultArea = new JTextArea(15, 52); /**/ resultArea.setEditable(false);
         JScrollPane scroll = new JScrollPane(resultArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

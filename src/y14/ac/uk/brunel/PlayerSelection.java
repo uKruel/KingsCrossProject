@@ -1,8 +1,13 @@
 package y14.ac.uk.brunel;
-
+/**
+ * This class contains properties of each player
+ * DO NOT include GUI elements here
+ * ONLY for the management of players
+ * Initial Creator: Limbu Anish
+ * Developers: Lucaci Paul, Limbu Anish, Lungu Dragos;
+ */
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;

@@ -1,5 +1,5 @@
 package y14.ac.uk.brunel;
-/*
+/**
  * This class contains properties of each player
  * DO NOT include GUI elements here
  * ONLY for the management of players
@@ -9,13 +9,11 @@ package y14.ac.uk.brunel;
 
 public class Player {
     private String name;
-    private int    score = 0;
-    private int    lives = 3;
-    private static int playerTotal = 0;   
+    private int score = 0;
+    private int lives = 3;
     
     public Player(String name) {
-    	setName(name);
-        playerTotal++;  
+    	this.setName(name);
     }            
     
     private void setName(String name) {
@@ -50,9 +48,5 @@ public class Player {
     
     public int getLives() {
         return this.lives;
-    }
-    
-    public static int getTotalPlayers() {
-        return playerTotal;
     }
 }

@@ -1,5 +1,5 @@
 package y14.ac.uk.brunel;
-/*
+/**
  * This class is the first one to run on application start-up
  * DO NOT include the game algorithm here
  * ONLY for the management of GUI
@@ -23,12 +23,7 @@ import javax.swing.GroupLayout.Alignment;
 public class FinchGameMainFrame {
 	
     JFrame mainFrame;
-    
-    /*private String finchFacts[] = {"Did you know that Finch can be programmed using many different programming languages? For example C, C++, Python, etc",
-                                   "Did you know that Finch robot has many different methods you can use to program it?",
-                                   "Did you know that Finch robot has many sensors that can be used to interact with its environment?",
-                                   "Did you know that Finch suppports varieties of IDE? Such as Code::Blocks, BlueJ, Eclipse, Visual Studio, etc." };*/
-    
+      
     public FinchGameMainFrame() {
     	initialize();
     }
@@ -61,19 +56,20 @@ public class FinchGameMainFrame {
         	public void actionPerformed(ActionEvent event) {
         		FinchGUISinglePlayer finchSinglePlayerFrame = new FinchGUISinglePlayer();
         		finchSinglePlayerFrame.spFrame.setVisible(true);
+        		finchSinglePlayerFrame.spFrame.setResizable(false);
         	}        
         });
         multiPlayerButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		FinchGUIMultiPlayer finchMultiPlayerFrame = new FinchGUIMultiPlayer();
         		finchMultiPlayerFrame.mpFrame.setVisible(true);
+        		finchMultiPlayerFrame.mpFrame.setResizable(false);
         	}
         });
         
-        //SecureRandom randomEngine = new SecureRandom(); /**/ int randomValue = randomEngine.nextInt(finchFacts.length);
         JLabel labelNameOne = new JLabel("Powered By Yellow14"); /**/ labelNameOne.setFont(new Font("Calibri", Font.BOLD, 15));
         JLabel imageIconLabel = new JLabel(new ImageIcon(getClass().getResource("finch.jpg")));
-        //imageIconLabel.setHorizontalAlignment(SwingConstants.LEADING);/**/ imageIconLabel.setToolTipText(finchFacts[randomValue]);
+        
         GroupLayout groupLayout = new GroupLayout(mainFrame.getContentPane());
         groupLayout.setHorizontalGroup(
         	groupLayout.createParallelGroup(Alignment.LEADING)

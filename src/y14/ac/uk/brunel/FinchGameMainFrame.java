@@ -39,6 +39,7 @@ public class FinchGameMainFrame {
 				try {
 					FinchGameMainFrame window = new FinchGameMainFrame();
 					window.mainFrame.setVisible(true);
+					window.mainFrame.setResizable(false);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -60,14 +61,12 @@ public class FinchGameMainFrame {
         	public void actionPerformed(ActionEvent event) {
         		FinchGUISinglePlayer finchSinglePlayerFrame = new FinchGUISinglePlayer();
         		finchSinglePlayerFrame.spFrame.setVisible(true);
-        		finchSinglePlayerFrame.spFrame.setResizable(false);
         	}        
         });
         multiPlayerButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		FinchGUIMultiPlayer finchMultiPlayerFrame = new FinchGUIMultiPlayer();
         		finchMultiPlayerFrame.mpFrame.setVisible(true);
-        		finchMultiPlayerFrame.mpFrame.setResizable(false);
         	}
         });
         

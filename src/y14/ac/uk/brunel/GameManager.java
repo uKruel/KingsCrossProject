@@ -18,8 +18,9 @@ public class GameManager {
 	private int nPlayers;
 	private int[] seq, seqInput;
 	private ArrayList<Player> players = new ArrayList<Player>();
-	public GameManager(int nPlayers){
-		this.nPlayers = nPlayers;
+	public GameManager(ArrayList<Player> players){
+		this.players = players;
+		this.nPlayers = players.size();
 	}
 	
 	private boolean seqGenerator(int level) {
@@ -29,6 +30,14 @@ public class GameManager {
 	
 	private boolean seqChecker() {
 		return false;
+		
+	}
+	
+	public ArrayList<Player> getPlayers() {
+		return this.players;
+	}
+	
+	public void startGame() {
 		
 	}
 	

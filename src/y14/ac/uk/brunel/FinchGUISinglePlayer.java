@@ -12,9 +12,13 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 
+import java.awt.Dialog;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.util.ArrayList;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -28,17 +32,19 @@ public class FinchGUISinglePlayer {
     protected Icon AllFinchesIcon   = new ImageIcon(getClass().getResource("FinchesImage.jpg"));
     protected Icon BeakUpFinchIcon  = new ImageIcon(getClass().getResource("FinchBeakUpImage.jpg"));
     protected Icon FinchesImages[] = {RedFinchIcon, GreenFinchIcon, BlueFinchIcon, YellowFinchIcon};
-    
-    protected Player playerOne = new Player("Player One");
-    
+
+	protected PlayerSelection ps;
+    protected ArrayList<Player> players = new ArrayList<Player>();
     JFrame spFrame;
     
     public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					
 					FinchGUISinglePlayer window = new FinchGUISinglePlayer();
 					window.spFrame.setVisible(true);
+					window.spFrame.setResizable(false);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -51,16 +57,22 @@ public class FinchGUISinglePlayer {
     }
     
     private void initialize() {
+    	ps = new PlayerSelection(1);
+    	ps.frmSimongameplayerselection.setVisible(true);
+    	this.players = ps.setPlayers();
+    	
     	spFrame = new JFrame();
     	spFrame.setTitle("SimonGame [Singleplayer]");
     	spFrame.setBounds(100, 100, 637, 523);
     	spFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        GameManager gm = new GameManager(players);
+    	gm.startGame();
     	
     	JLabel simonLabel = new JLabel("The SimonFinches"); /**/ simonLabel.setFont(new Font("Calibri", Font.BOLD, 30));
-    	JLabel playerOneNameLabel = new JLabel(playerOne.getName() + "'s score: ");
-    	JLabel playerOneScoreLabel = new JLabel(Integer.toString(playerOne.getScore()));
-    	JLabel playerOneLivesLabelText = new JLabel(playerOne.getName() + "'s lives: ");
-    	JLabel playerOneLivesLabel = new JLabel((Integer.toString(playerOne.getLives())));
+    	JLabel playerOneNameLabel = new JLabel(players.get(0).getName() + "'s score: ");
+    	JLabel playerOneScoreLabel = new JLabel(Integer.toString(players.get(0).getScore()));
+    	JLabel playerOneLivesLabelText = new JLabel(players.get(0).getName() + "'s lives: ");
+    	JLabel playerOneLivesLabel = new JLabel((Integer.toString(players.get(0).getLives())));
         JLabel finchesImagesLabel = new JLabel(AllFinchesIcon);
         JTextArea resultArea = new JTextArea(15, 52); /**/ resultArea.setEditable(false);
         JScrollPane scroll = new JScrollPane(resultArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

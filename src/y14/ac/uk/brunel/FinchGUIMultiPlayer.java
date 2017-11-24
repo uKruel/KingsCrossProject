@@ -32,8 +32,7 @@ public class FinchGUIMultiPlayer {
     protected Icon BeakUpFinchIcon = new ImageIcon(getClass().getResource("FinchBeakUpImage.jpg"));
     protected Icon FinchesImages[] = {RedFinchIcon, GreenFinchIcon, BlueFinchIcon, YellowFinchIcon};
     
-    protected Player playerOne = new Player("Player One");
-    protected Player playerTwo = new Player("Player Two");
+    
     
     JFrame mpFrame;
     
@@ -43,6 +42,7 @@ public class FinchGUIMultiPlayer {
 				try {
 					FinchGUIMultiPlayer window = new FinchGUIMultiPlayer();
 					window.mpFrame.setVisible(true);
+					window.mpFrame.setResizable(false);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

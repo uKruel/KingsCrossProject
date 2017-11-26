@@ -8,6 +8,11 @@ package y14.ac.uk.brunel;
  */
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import edu.cmu.ri.createlab.terk.robot.finch.Finch;
+
 /**
  * 
  * Class to be discussed/explained
@@ -19,6 +24,13 @@ public class GameManager {
 	private int[] seq, seqInput;
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private boolean onGoing;
+	private Finch redFinch = new Finch();
+	private Finch greenFinch = new Finch();
+	private Finch blueFinch = new Finch();
+	private Finch yellowFinch = new Finch();
+	private Finch beakupFinch = new Finch();
+	private Finch[] finchArray = {redFinch, greenFinch, blueFinch, yellowFinch};
+	private JFrame frame;
 	public GameManager(ArrayList<Player> players){
 		this.players = players;
 		this.nPlayers = players.size();
@@ -41,6 +53,30 @@ public class GameManager {
 	
 	public void startGame() {
 		setOnGoing(true);
+		while(!beakupFinch.isBeakDown()) {
+			seqGenerator(level);
+			for(Player player : getPlayers()) {
+				if(!beakupFinch.isBeakUp()) {
+					if(player.getIsAlive()) {
+						
+					}
+				}
+				else {
+			        int input = JOptionPane.showConfirmDialog
+			        		(
+			        			null,
+			                "Do you want to exit the game?",
+			                "BeakUp Finch Detected",
+			                JOptionPane.YES_NO_OPTION
+			             );
+			        if(input == JOptionPane.YES_OPTION) {
+			        		
+			        }
+				}
+			}
+			
+		}
+		
 	}
 	
 	public static void main(String[] args) {

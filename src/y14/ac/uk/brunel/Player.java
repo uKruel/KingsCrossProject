@@ -12,13 +12,14 @@ public class Player {
     private int score = 0;
     private int lives = 3;
     public static int levels=1;
+    private boolean isAlive=true;
     
     public Player(String name) {
     	this.setName(name);
     }            
     
     private void setName(String name) {
-    	this.name = name;
+    		this.name = name;
     }
     
     public void incrementScore() {
@@ -26,9 +27,9 @@ public class Player {
     }
     
     public void decreaseScore() {
-    	score--;
+    		score--;
         if(score <= 0) {
-        	score = 0;
+        		score = 0;
         }
     }
     
@@ -36,10 +37,19 @@ public class Player {
         lives--;
         if(lives <= 0) {
             lives = 0;
+            setIsAlive(false);
         }
     }
     
-    public String getName() {
+    public void setIsAlive(boolean isAlive) {
+		this.isAlive = isAlive;
+	}
+    
+    public boolean getIsAlive() {
+    		return this.isAlive;
+    }
+
+	public String getName() {
         return this.name;
     }
     

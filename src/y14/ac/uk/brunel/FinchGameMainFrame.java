@@ -60,7 +60,7 @@ public class FinchGameMainFrame {
         	}        
         });
         multiPlayerButton.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) {
         		FinchGUIMultiPlayer finchMultiPlayerFrame = new FinchGUIMultiPlayer();
         		finchMultiPlayerFrame.mpFrame.setVisible(true);
         		finchMultiPlayerFrame.mpFrame.setResizable(false);

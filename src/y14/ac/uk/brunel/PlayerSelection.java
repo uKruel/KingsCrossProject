@@ -1,9 +1,8 @@
 package y14.ac.uk.brunel;
 /**
- * This class contains properties of each player
- * DO NOT include GUI elements here
- * ONLY for the management of players
- * Initial Creator: Limbu Anish
+ * This class allows the user to select names for players
+ * ONLY for the management of players' names
+ * Initial Creator: Lucaci Paul Marian
  * Developers: Lucaci Paul, Limbu Anish, Lungu Dragos;
  */
 import java.awt.EventQueue;
@@ -19,6 +18,7 @@ import javax.swing.JDialog;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
 public class PlayerSelection {
 
@@ -27,6 +27,7 @@ public class PlayerSelection {
 	
 	private ArrayList<Player> players = new ArrayList<Player>();
 	public static int nPlayers;
+	public static String title;
 	/**
 	 * Launch the application.
 	 */
@@ -35,7 +36,7 @@ public class PlayerSelection {
 
 			public void run() {
 				try {
-					PlayerSelection window = new PlayerSelection(nPlayers);
+					PlayerSelection window = new PlayerSelection(nPlayers, title);
 					window.frmSimongameplayerselection.setVisible(true);
 					window.frmSimongameplayerselection.setResizable(false);
 				} catch (Exception e) {
@@ -48,11 +49,13 @@ public class PlayerSelection {
 	/**
 	 * Create the application.
 	 */
-	public PlayerSelection(int nPlayers) {
+	public PlayerSelection(int nPlayers, String title) {
 		initialize();
 		PlayerSelection.nPlayers = nPlayers;
+		PlayerSelection.title = title;
+		frmSimongameplayerselection.setTitle(title);
 	}
-
+	
 	public ArrayList<Player> setPlayers() {
 		return this.players;
 	}
@@ -62,13 +65,14 @@ public class PlayerSelection {
 	 */
 	private void initialize() {
 		frmSimongameplayerselection = new JDialog();
-		frmSimongameplayerselection.setTitle("SimonGame [PlayerSelection]");
+		frmSimongameplayerselection.setTitle(title);
 		frmSimongameplayerselection.setBounds(100, 100, 300, 155);
 		frmSimongameplayerselection.setModal(true);
-		frmSimongameplayerselection.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		frmSimongameplayerselection.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		
 		JLabel lblPlayerName = new JLabel("Player #1 Name:");
 		txtAddPlayerName = new JTextField();
+		txtAddPlayerName.setHorizontalAlignment(SwingConstants.CENTER);
 		txtAddPlayerName.setText("Add Player #1 Name");
 		txtAddPlayerName.setColumns(10);
 		
@@ -78,7 +82,7 @@ public class PlayerSelection {
 			public void actionPerformed(ActionEvent arg0) {
 				if(i<=nPlayers) {
 					players.add(new Player(txtAddPlayerName.getText()));
-					if(i<3) {
+					if(i<nPlayers) {
 						txtAddPlayerName.setText("Add Player #"+(int)(i+1)+" Name");
 						lblPlayerName.setText("Player #"+(int)(i+1)+" Name:");
 					}
@@ -98,26 +102,28 @@ public class PlayerSelection {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(87)
-							.addComponent(btnNewButton))
+							.addContainerGap()
+							.addComponent(lblPlayerName, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addGap(12)
+							.addComponent(txtAddPlayerName, GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(32)
-							.addComponent(lblPlayerName)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(txtAddPlayerName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(35, Short.MAX_VALUE))
+							.addGap(89)
+							.addComponent(btnNewButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addGap(88)))
+					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(34)
+					.addGap(28)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(txtAddPlayerName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblPlayerName))
-					.addGap(18)
-					.addComponent(btnNewButton)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addComponent(txtAddPlayerName)
+						.addComponent(lblPlayerName, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnNewButton, GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+					.addGap(20))
 		);
+		
 		frmSimongameplayerselection.getContentPane().setLayout(groupLayout);
 	}
 }

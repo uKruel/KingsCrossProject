@@ -14,6 +14,11 @@ public  class Levels
        
    }
    
+   /**
+    * Pick up the level
+    * @param lvl
+    * @return the minimum and maximum value of how many colors the game will show, using an array size of 2
+    */
    public int[] setLevel(int lvl) {
        
        switch(lvl){

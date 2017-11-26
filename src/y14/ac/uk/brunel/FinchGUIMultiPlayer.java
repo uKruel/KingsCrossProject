@@ -1,5 +1,5 @@
 package y14.ac.uk.brunel;
-/*
+/**
  * This class is for Multiplayer ONLY
  * DO NOT include the game algorithm here
  * ONLY for the management of GUI
@@ -8,8 +8,6 @@ package y14.ac.uk.brunel;
  */
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 import y14.ac.uk.brunel.FinchGUIMultiPlayer;
 
@@ -19,10 +17,18 @@ import javax.swing.ImageIcon;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.JScrollPane;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class FinchGUIMultiPlayer {
 	
@@ -34,11 +40,13 @@ public class FinchGUIMultiPlayer {
     protected Icon BeakUpFinchIcon = new ImageIcon(getClass().getResource("FinchBeakUpImage.jpg"));
     protected Icon FinchesImages[] = {RedFinchIcon, GreenFinchIcon, BlueFinchIcon, YellowFinchIcon};
     
-    protected PlayerSelection ps;
+    protected PlayerSelection ps; protected PlayerSize psz = new PlayerSize();
     protected ArrayList<Player> players = new ArrayList<Player>();
-    
     JFrame mpFrame;
-    
+    private JTable table;
+	private GameManager gm;
+	protected LevelSelection lvlsel;
+	
     public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -56,71 +64,66 @@ public class FinchGUIMultiPlayer {
     public FinchGUIMultiPlayer() { 
     	initialize();
     }
-
+    
 	private void initialize() {
+		
 		/**
     	 * Letting the app know this is a more-than-1-player game
     	 * Set the amount of players, pass it to the PlayerSelection manager,
-    	 * passing back the ArrayList<Players> to this class for using the names 
+    	 * passing back the ArrayList<Players> to this class for using the names.
+    	 * Closing the form if user's input is not valid
     	 */
-    	ps = new PlayerSelection(2);
+		psz.frmSimongamesize.setResizable(false);
+		psz.frmSimongamesize.setVisible(true);
+    	ps = new PlayerSelection(psz.getSizeP(), "SimonGame[Step-2]");
     	ps.frmSimongameplayerselection.setResizable(false);
     	ps.frmSimongameplayerselection.setVisible(true);
     	this.players = ps.setPlayers();
     	
     	/**
+    	 * Picking the initial level to start from
+    	 */
+    	lvlsel = new LevelSelection("SimonGame [Step-3]");
+    	lvlsel.frmSimongamelevel.setResizable(false);
+    	lvlsel.frmSimongamelevel.setVisible(true);
+		Player.levels = lvlsel.getLevel();
+    	
+    	/**
     	 * Starting the Multiplayer GUI 
     	 */
 		mpFrame = new JFrame();
+		mpFrame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				gm.stopGame();
+			}
+		});
+		mpFrame.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				gm.stopGame();
+			}
+		});
 		mpFrame.setTitle("SimonGame [Multiplayer]");
 		mpFrame.setBounds(100, 100, 643, 588);
-		mpFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-    	/**
-    	 * GameManager is being called for SinglePlayer
-    	 * Let the match begin!
-    	 */
-        GameManager gm = new GameManager(players);
-    	gm.startGame();
-    	
+		mpFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		JLabel simonLabel = new JLabel("The SimonFinches"); /**/ simonLabel.setFont(new Font("Calibri", Font.BOLD, 30));
-        JLabel playerOneNameLabel = new JLabel(" " + players.get(0).getName() + "'s score: ");
-        JLabel playerOneScoreLabel = new JLabel(Integer.toString(players.get(0).getScore()));
-        JLabel playerOneLivesLabelText = new JLabel(" " + players.get(0).getName() + "'s lives: ");
-        JLabel playerOneLivesLabel = new JLabel((Integer.toString(players.get(0).getLives())));
-        JLabel playerTwoNameLabel = new JLabel(" " + players.get(1).getName() + "'s score: ");
-        JLabel playerTwoScoreLabel = new JLabel(Integer.toString(players.get(1).getScore()));
-        JLabel playerTwoLivesLabelText = new JLabel(" " + players.get(1).getName() + "'s lives: ");
-        JLabel playerTwoLivesLabel = new JLabel((Integer.toString(players.get(1).getLives())));
         JLabel finchesImagesLabel = new JLabel(AllFinchesIcon);
-        JTextArea resultArea = new JTextArea(15, 52); /**/ resultArea.setEditable(false);
-        JScrollPane scroll = new JScrollPane(resultArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    	
+    	/**
+    	 * Setting up the GUI environment
+    	 */
+        
+        JScrollPane scrollPane = new JScrollPane();
         GroupLayout groupLayout = new GroupLayout(mpFrame.getContentPane());
         groupLayout.setHorizontalGroup(
-        	groupLayout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+        	groupLayout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
         			.addContainerGap()
-        			.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-        				.addComponent(scroll, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE)
-        				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-        					.addGap(51)
-        					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-        						.addComponent(playerOneLivesLabelText)
-        						.addComponent(playerOneNameLabel))
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-        						.addComponent(playerOneLivesLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        						.addComponent(playerOneScoreLabel))
-        					.addGap(215)
-        					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-        						.addComponent(playerTwoNameLabel)
-        						.addComponent(playerTwoLivesLabelText))
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-        						.addComponent(playerTwoLivesLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        						.addComponent(playerTwoScoreLabel)))
-        				.addComponent(finchesImagesLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+        			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(scrollPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE)
+        				.addComponent(finchesImagesLabel, GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE)
+        				.addGroup(groupLayout.createSequentialGroup()
         					.addGap(183)
         					.addComponent(simonLabel)))
         			.addContainerGap())
@@ -132,30 +135,71 @@ public class FinchGUIMultiPlayer {
         			.addComponent(simonLabel, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
         			.addGap(18)
         			.addComponent(finchesImagesLabel, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-        			.addGap(18)
-        			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(groupLayout.createSequentialGroup()
-        					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-        						.addComponent(playerOneNameLabel)
-        						.addComponent(playerOneScoreLabel))
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-        						.addComponent(playerOneLivesLabelText)
-        						.addComponent(playerOneLivesLabel, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)))
-        				.addGroup(groupLayout.createSequentialGroup()
-        					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-        						.addComponent(playerTwoNameLabel)
-        						.addComponent(playerTwoScoreLabel))
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-        						.addComponent(playerTwoLivesLabelText)
-        						.addComponent(playerTwoLivesLabel))))
-        			.addGap(18)
-        			.addComponent(scroll, GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
+        			.addGap(15)
+        			.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE)
         			.addContainerGap())
         );
+        
+        /**
+         * Table Data and Heading
+         */
+        table = new JTable(psz.getSizeP(), 4);
+        table.getTableHeader().getColumnModel().getColumn(0).setHeaderValue("PlayerName");
+        table.getTableHeader().getColumnModel().getColumn(1).setHeaderValue("Score");
+        table.getTableHeader().getColumnModel().getColumn(2).setHeaderValue("Lives");
+        table.getTableHeader().getColumnModel().getColumn(3).setHeaderValue("Level");
+        table.getTableHeader().setReorderingAllowed(false);
+        DefaultTableCellRenderer cellRender= new DefaultTableCellRenderer();
+        cellRender.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+        table.getColumn("PlayerName").setCellRenderer(cellRender);
+        table.getColumn("Score").setCellRenderer(cellRender);
+        table.getColumn("Lives").setCellRenderer(cellRender);
+        table.getColumn("Level").setCellRenderer(cellRender);
+        table.setRowHeight(40);
+        table.repaint();
+        
+        scrollPane.setViewportView(table);
+        table.setFillsViewportHeight(true);
+        fillTableData(new GameManager(players));
+        
+        /**
+    	 * GameManager is being called for MultiPlayer
+    	 * Let the match begin!
+    	 */
+        gm = new GameManager(players);
+        updateTable(table,gm);
+    	gm.startGame();
+    	
+    	//Final bind
         mpFrame.getContentPane().setLayout(groupLayout);
-
 	}
-    
+
+	/**
+	 * Updating the table data*/
+	private void updateTable(JTable table, GameManager gm) {
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask(){
+			@Override
+			public void run() {
+					if(gm.isOnGoing()) {
+						fillTableData(gm);
+					} else {
+						this.cancel();
+					}
+				}
+			},0,1*1000);
+	}
+	
+	/**
+	 * Fill the table with data
+	 */
+	private void fillTableData(GameManager gm) {
+		int i;
+		for(i=0;i<psz.getSizeP();i++) {
+			table.setValueAt(gm.getPlayers().get(i).getName(), i, 0);
+			table.setValueAt(gm.getPlayers().get(i).getScore(), i, 1);
+			table.setValueAt(gm.getPlayers().get(i).getLives(), i, 2);
+			table.setValueAt(Player.levels, i, 3);
+		}
+	}
 }

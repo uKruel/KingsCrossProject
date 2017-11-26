@@ -11,6 +11,7 @@ public class Player {
     private String name;
     private int score = 0;
     private int lives = 3;
+    public static int levels=1;
     
     public Player(String name) {
     	this.setName(name);
